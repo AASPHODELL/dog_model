@@ -91,16 +91,6 @@ callbacks_list = [early_stop, model_ckpt]
 
 model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Предобработка тестовых данных
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-test_gen = augmenter.flow_from_directory(val_path,
-                                         target_size=(224, 224),
-                                         color_mode="rgb",
-                                         class_mode="categorical",
-                                         batch_size=32,
-                                         shuffle=False)
-
 # Обучение модели
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -112,7 +102,7 @@ hist = model.fit(
 # Оценка модели
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-(eval_loss, eval_acc) = model.evaluate(test_gen)
+(eval_loss, eval_acc) = model.evaluate(val_gen)
 
 train_loss_vals = hist.history['loss']
 val_loss_vals = hist.history['val_loss']
